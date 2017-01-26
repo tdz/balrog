@@ -55,6 +55,8 @@ def createBlob(data):
     if schema_version not in blob_map:
         raise ValueError("schema_version is unknown")
 
+    print "schema_version " + str(schema_version)
+
     return blob_map[schema_version](**data)
 
 

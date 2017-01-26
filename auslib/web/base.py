@@ -38,19 +38,19 @@ def fourohfour(error):
     return response
 
 
-@app.errorhandler(Exception)
-def generic(error):
-    """Deals with any unhandled exceptions. If the exception is not a
-    BadDataError, it will be sent to Sentry, and a 400 will be returned,
-    because BadDataErrors are considered to be the client's fault.
-    Otherwise, the error is just re-raised (which causes a 500)."""
-
-    if isinstance(error, BadDataError):
-        return Response(status=400, response=error.message)
-
-    if sentry.client:
-        sentry.captureException()
-    raise error
+#@app.errorhandler(Exception)
+#def generic(error):
+#    """Deals with any unhandled exceptions. If the exception is not a
+#    BadDataError, it will be sent to Sentry, and a 400 will be returned,
+#    because BadDataErrors are considered to be the client's fault.
+#    Otherwise, the error is just re-raised (which causes a 500)."""
+#
+#    if isinstance(error, BadDataError):
+#        return Response(status=400, response=error.message)
+#
+#    if sentry.client:
+#        sentry.captureException()
+#    raise error
 
 
 @app.route('/robots.txt')

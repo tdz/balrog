@@ -122,6 +122,8 @@ def BlobColumn(impl=Text):
 
         def process_result_value(self, value, dialect):
             if value:
+                print "DB createBlob"
+                print value
                 value = createBlob(value)
             return value
 

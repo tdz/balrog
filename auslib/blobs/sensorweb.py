@@ -7,6 +7,9 @@ class SensorWebBlobV1(Blob):
     jsonschema = "sensorweb.yml"
 
     def __init__(self, **kwargs):
+
+        print "init SensorWebBlobv1"
+
         Blob.__init__(self, **kwargs)
         if "schema_version" not in self:
             self["schema_version"] = 2000

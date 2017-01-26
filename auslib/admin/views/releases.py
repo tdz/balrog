@@ -22,6 +22,7 @@ __all__ = ["SingleReleaseView", "SingleLocaleView"]
 
 
 def createRelease(release, product, changed_by, transaction, releaseData):
+    print "admin createBlob 1"
     blob = createBlob(releaseData)
     dbo.releases.insert(changed_by=changed_by, transaction=transaction, name=release,
                         product=product, data=blob)
@@ -234,6 +235,7 @@ class SingleReleaseView(AdminView):
             self.log.warning("Bad input: %s", form.errors)
             return Response(status=400, response=json.dumps(form.errors))
 
+        print "admin createBlob 2"
         blob = createBlob(form.blob.data)
         if dbo.releases.getReleases(name=release, limit=1):
             data_version = form.data_version.data
@@ -279,6 +281,7 @@ class SingleReleaseView(AdminView):
 
         def commit(rel, product, newReleaseData, releaseData, old_data_version, extraArgs):
             releaseData.update(newReleaseData)
+            print "admin createBlob 3"
             blob = createBlob(releaseData)
             return dbo.releases.update(where={"name": rel}, what={"data": blob, "product": product},
                                        changed_by=changed_by, old_data_version=old_data_version,
@@ -426,6 +429,7 @@ class ReleaseHistoryView(HistoryAdminView):
         old_data_version = release['data_version']
 
         # now we're going to make a new update based on this change
+        print "admin createBlob 4"
         blob = createBlob(change['data'])
 
         try:
@@ -487,6 +491,7 @@ class ReleasesAPIView(AdminView):
             return Response(status=400, response=json.dumps(form.errors))
 
         try:
+            print "admin createBlob 5"
             blob = createBlob(form.blob.data)
             name = dbo.releases.insert(changed_by=changed_by, transaction=transaction,
                                        name=form.name.data, product=form.product.data,
@@ -537,9 +542,11 @@ class ReleaseScheduledChangesView(ScheduledChangesView):
 
         if change_type == "update":
             form = ScheduledChangeExistingReleaseForm()
+            print "admin createBlob 6"
             form.data.data = createBlob(form.data.data)
         elif change_type == "insert":
             form = ScheduledChangeNewReleaseForm()
+            print "admin createBlob 7"
             form.data.data = createBlob(form.data.data)
         elif change_type == "delete":
             form = ScheduledChangeDeleteReleaseForm()
@@ -566,6 +573,7 @@ class ReleaseScheduledChangeView(ScheduledChangeView):
         else:
             return Response(status=400, response="Invalid or missing change_type")
         if form.data.data:
+            print "admin createBlob 8"
             form.data.data = createBlob(form.data.data)
         return super(ReleaseScheduledChangeView, self)._post(sc_id, form, transaction, changed_by)
 

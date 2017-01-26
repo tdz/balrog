@@ -29,6 +29,8 @@ class ReleaseBlobBase(Blob):
 
     def getResolvedPlatform(self, platform):
         try:
+            print "1"
+            print self['platforms']
             return self['platforms'][platform].get('alias', platform)
         except KeyError:
             raise BadDataError("Can't find platform '%s'", platform)
@@ -48,13 +50,18 @@ class ReleaseBlobBase(Blob):
             raise BadDataError("Can't find locale '%s' in '%s'", locale, platform)
 
     def getLocaleOrTopLevelParam(self, platform, locale, param):
+        print "xxx " + platform + " " + locale + " " + param
         try:
+            print "a"
             platform = self.getResolvedPlatform(platform)
+            print "b"
             return self['platforms'][platform]['locales'][locale][param]
         except (BadDataError, KeyError):
             try:
+                print "c"
                 return self[param]
             except (BadDataError, KeyError):
+                print "d"
                 return None
 
     def getBuildID(self, platform, locale):
